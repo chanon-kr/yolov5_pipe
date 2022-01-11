@@ -12,7 +12,11 @@ for i in file_name :
 
 # Update Libraries
 import subprocess, sys
-
+update_list = [['-qr','https://raw.githubusercontent.com/ultralytics/yolov5/master/requirements.txt']
+               ,['-r','requirements.txt']]
+for i in update_list :
+    print(i)
+    subprocess.check_call([sys.executable, "-m", "pip", "install", i[0], i[1]], timeout = 30)
 
 # Run Script
 from py_topping.run_pipeline import run_pipeline
