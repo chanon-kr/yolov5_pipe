@@ -10,12 +10,12 @@ for i in file_name :
         with open('F00_script/{}'.format(i) , 'wb') as f : f.write(r.content)
     except : pass
 
-# Update Libraries
+# Update Dependencies
 import subprocess, sys
 update_list = [['-qr','https://raw.githubusercontent.com/ultralytics/yolov5/master/requirements.txt']
                ,['-r','F00_script/requirements.txt']]
 for i in update_list :
-    print(i)
+    print('Update Dependencies from ',i[1])
     subprocess.check_call([sys.executable, "-m", "pip", "install", i[0], i[1]], timeout = 30)
 
 # Run Script
