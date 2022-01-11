@@ -1,6 +1,11 @@
 import requests
 
 # Update Script
+try :
+    print('Update Script main.py')
+    r = requests.get('https://raw.githubusercontent.com/chanon-kr/yolov5_pipe/main/main.py', timeout = 20)
+    with open('main.py' , 'wb') as f : f.write(r.content)
+except : pass
 url = 'https://raw.githubusercontent.com/chanon-kr/yolov5_pipe/main/F00_script/'
 file_name = ['script.py','func_utilities.py']
 for i in file_name :
