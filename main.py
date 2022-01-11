@@ -1,5 +1,4 @@
 import requests
-from py_topping.run_pipeline import run_pipeline
 
 # Update Script
 url = 'https://github.com/chanon-kr/yolov5_pipe/blob/main/F00_script/'
@@ -12,9 +11,11 @@ for i in file_name :
     except : pass
 
 # Update Libraries
+import subprocess, sys
 
 
 # Run Script
+from py_topping.run_pipeline import run_pipeline
 run_pipeline(script_list = ['F00_script/script.py']
              , only_error = True
              , line_sending = ''
