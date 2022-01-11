@@ -21,7 +21,10 @@ for i in update_list :
 
 # Run Script
 from py_topping.run_pipeline import run_pipeline
+from py_toppng.general_use import lazy_LINE
+
+pipeline_line = lazy_LINE('')
 run_pipeline(script_list = ['F00_script/script.py']
              , only_error = True
-             , line_sending = ''
+             , line_sending = pipeline_line
              , line_subject = '')
