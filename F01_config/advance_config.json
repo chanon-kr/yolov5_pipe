@@ -1,0 +1,35 @@
+{
+    "error_token" : "",
+    "local_framework" : 0,
+    "force_reload" : 1,
+    "local_record_config": {
+        "type": "sqlite",
+        "host_name": "local_result.db"
+    },
+    "db_record_config": {
+        "type": "",
+        "host_name": "",
+        "db_name": "",
+        "user": "",
+        "password": ""
+    },
+    "bucket_config": {
+        "project_id": "",
+        "bucket_name": "",
+        "credential": ""
+    },
+    "model_source_config": {
+        "project_id": "",
+        "bucket_name": "",
+        "credential": ""
+    },
+    "heart_beat_config": {
+        "type": "",
+        "host_name": "",
+        "db_name": "",
+        "user": "",
+        "password": "",
+        "table_name": ""
+    },
+    "heart_table_name": ""
+}
