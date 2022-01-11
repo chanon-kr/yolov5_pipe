@@ -92,7 +92,7 @@ turn_on_update_model = (model_source != '') & (model_source_config != '')
 turn_on_upload_db = (db_table != '') & (db_record_config != '')
 turn_on_upload_clip = (bucket_folder_name != '') & (bucket_config != '')
 ## Advanace config
-turn_on_heartbeat = (heart_beat_config != '')
+turn_on_heartbeat = (heart_beat_config != '') & (heart_table_name != '')
 turn_on_local_record = (local_record_config != '')
 turn_on_upload_db = (turn_on_local_record & turn_on_upload_db)
 
