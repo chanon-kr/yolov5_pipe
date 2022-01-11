@@ -24,7 +24,8 @@ from py_topping.run_pipeline import run_pipeline
 from py_topping.general_use import lazy_LINE
 
 pipeline_line = lazy_LINE('')
-run_pipeline(script_list = ['F00_script/script.py']
+_ = run_pipeline(script_list = ['F00_script/script.py']
              , only_error = True
              , line_sending = pipeline_line
              , line_subject = '')
+print(_)
