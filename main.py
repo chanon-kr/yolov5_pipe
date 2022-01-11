@@ -1,18 +1,21 @@
+import requests
 from py_topping.run_pipeline import run_pipeline
-from py_topping.data_connection.database import lazy_GCS
-import json
 
-try :
-    with open('F00_script/root_config.json') as f :
-        input_json = json.load(f)
-    gcs = lazy_GCS(project_id = input_json['project_id']
-                    , bucket_name = input_json['bucket_name']
-                    , credential = input_json['credential'])
-    gcs.download(bucket_file = input_json['bucket_file']
-                , local_file = 'F00_script/script.py')
-except : pass
+# Update Script
+url = 'https://github.com/chanon-kr/yolov5_pipe/blob/main/F00_script/'
+file_name = ['script.py','func_utilities.py']
+for i in file_name :
+    try :
+        print('Update Script {}'.format(i))
+        r = requests.get(url + i, timeout = 20)
+        with open('F00_script/{}'.format(i) , 'wb') as f : f.write(r.content)
+    except : pass
 
+# Update Libraries
+
+
+# Run Script
 run_pipeline(script_list = ['F00_script/script.py']
              , only_error = True
-             , line_sending = input_json['error_token']
-             , line_subject = input_json['error_subject'])
+             , line_sending = ''
+             , line_subject = '')
