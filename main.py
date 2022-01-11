@@ -1,7 +1,7 @@
 import requests
 
 # Update Script
-url = 'https://github.com/chanon-kr/yolov5_pipe/blob/main/F00_script/'
+url = 'https://raw.githubusercontent.com/chanon-kr/yolov5_pipe/main/F00_script/'
 file_name = ['script.py','func_utilities.py']
 for i in file_name :
     print('Update Script {}'.format(i))
