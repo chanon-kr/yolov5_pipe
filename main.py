@@ -16,7 +16,8 @@ update_list = [['-qr','https://raw.githubusercontent.com/ultralytics/yolov5/mast
                ,['-r','F00_script/requirements.txt']]
 for i in update_list :
     print('Update Dependencies from ',i[1])
-    subprocess.check_call([sys.executable, "-m", "pip", "install", i[0], i[1]], timeout = 30)
+    try : subprocess.check_call([sys.executable, "-m", "pip", "install", i[0], i[1]], timeout = 30)
+    except : pass
 
 # Run Script
 from py_topping.run_pipeline import run_pipeline
