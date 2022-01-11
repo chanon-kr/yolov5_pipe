@@ -28,4 +28,4 @@ _ = run_pipeline(script_list = ['F00_script/script.py']
              , only_error = True
              , line_sending = pipeline_line
              , line_subject = '')
-print(_)
+print(_['run_result'][0])
