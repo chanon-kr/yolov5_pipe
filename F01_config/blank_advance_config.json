@@ -1,5 +1,6 @@
 {
     "error_token" : "",
+    "error_name" : "",
     "local_framework" : 0,
     "force_reload" : 1,
     "local_record_config": {
