@@ -106,9 +106,9 @@ def upload_result(temp_table_in , now_in, db_table_in, local_record_config_in, d
     date_query = str(tuple(date_query))
     condition_statement = """FROM {} WHERE SUBSTR(slot_time ,1, 13) IN {}""".format(temp_table_in, date_query)
     df_sql = sqlite.read("""SELECT * {}""".format(condition_statement), raw = True )
+    print('Start Upload Database')
     if ignore_error_in :
         try :
-            print('Start Upload Database')
             des_sql.sub_dump(df_sql , db_table_in,'append')
             sqlite.engine.execute("""DELETE {}""".format(condition_statement))
         except : pass
