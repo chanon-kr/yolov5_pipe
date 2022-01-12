@@ -1,11 +1,13 @@
-import requests
+from py_topping.general_use import timeout
 import git
 # Update Script
 print('Update script from GitHub')
-try :
+@timeout(1)
+def update_yolov5_pipe() :
     repo = git.Repo()
     repo.remotes.origin.pull()
-except : pass
+try : update_yolov5_pipe()
+except : print('Update script from GitHub Fail')
 
 # Update Dependencies
 import subprocess, sys
