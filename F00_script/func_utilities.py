@@ -8,34 +8,7 @@ from py_topping.data_connection.database import lazy_SQL
 from py_topping.data_connection.gcp import lazy_GCS
 from glob import glob
 
-# from threading import Thread
-# import functools
-
-# def timeout(timeout):
-#     def deco(func):
-#         @functools.wraps(func)
-#         def wrapper(*args, **kwargs):
-#             res = [Exception('function [%s] timeout [%s seconds] exceeded!' % (func.__name__, timeout))]
-#             def newFunc():
-#                 try:
-#                     res[0] = func(*args, **kwargs)
-#                 except Exception as e:
-#                     res[0] = e
-#             t = Thread(target=newFunc)
-#             t.daemon = True
-#             try:
-#                 t.start()
-#                 t.join(timeout)
-#             except Exception as je:
-#                 print ('error starting thread')
-#                 raise je
-#             ret = res[0]
-#             if isinstance(ret, BaseException):
-#                 raise ret
-#             return ret
-#         return wrapper
-#     return deco
-
+@timeout(30)
 def update_local_framework() :
     if not os.path.isdir('ultralytics') : os.makedirs(os.path.join(os.getcwd(),'ultralytics'))
     os.chdir('ultralytics')
@@ -53,8 +26,7 @@ def setup_model(model_name, force_reload, device_type, conf, iou, class_detect, 
     print('Set up Model')
     if local_framework :
         base_dir = os.getcwd()
-        t_update_local_framework = timeout(timeout=30)(update_local_framework)
-        try : t_update_local_framework()
+        try : update_local_framework()
         except : print('Update Fail')
         os.chdir(base_dir)
         print(os.getcwd())
