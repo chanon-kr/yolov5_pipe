@@ -236,5 +236,4 @@ def main_script() :
         if turn_on_heartbeat : send_heartbeat('Callback Phase', heart_table_name, heart_beat_config, ignore_error_in = False, error_message_in = long_error)
         send_LINE('\n---\n{}\n---\n{}'.format(job_name, error_message) , error_token, '')
 
-if __name__ == '__main__':
-    main_script()
+main_script()
