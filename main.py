@@ -2,7 +2,7 @@ from py_topping.general_use import timeout
 import git
 # Update Script
 print('Update script from GitHub')
-@timeout(1)
+@timeout(30)
 def update_yolov5_pipe() :
     repo = git.Repo()
     repo.remotes.origin.pull()

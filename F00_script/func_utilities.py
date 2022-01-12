@@ -53,7 +53,7 @@ def setup_model(model_name, force_reload, device_type, conf, iou, class_detect, 
     print('Set up Model')
     if local_framework :
         base_dir = os.getcwd()
-        t_update_local_framework = timeout(timeout=1)(update_local_framework)
+        t_update_local_framework = timeout(timeout=30)(update_local_framework)
         try : t_update_local_framework()
         except : print('Update Fail')
         os.chdir(base_dir)
