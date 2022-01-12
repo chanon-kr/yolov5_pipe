@@ -1,4 +1,4 @@
-import cv2, os
+import cv2, os, torch
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
@@ -6,6 +6,19 @@ from py_topping.general_use import lazy_LINE, healthcheck
 from py_topping.data_connection.database import lazy_SQL
 from py_topping.data_connection.gcp import lazy_GCS
 from glob import glob
+
+def setup_model(model_name, force_reload, device_type, conf, iou, class_detect, local_framework) :
+    print('Set up Model')
+    if local_framework :
+        model = torch.hub.load('yolov5', 'custom', path = model_name
+                                , source ='local'
+                                , force_reload = force_reload, device = device_type) 
+    else :
+        model = torch.hub.load('ultralytics/yolov5' , 'custom', path = model_name
+                                , force_reload = force_reload, device = device_type) 
+    model.conf, model.iou = conf, iou 
+    model.classes = class_detect
+    return model
 
 def send_heartbeat(process_name_in, table_name_in, heart_beat_config_in, ignore_error_in = False, error_message_in = '') :
     des_sql = lazy_SQL(sql_type = heart_beat_config_in['type'] 

@@ -104,16 +104,17 @@ if turn_on_heartbeat : send_heartbeat('Start Prep Phase', heart_table_name, hear
 if turn_on_update_model : update_model(model_source , model_name, model_source_config)
 
 # Model
-print('Set up Model')
-if local_framework :
-    model = torch.hub.load('yolov5', 'custom', path = model_name
-                            , source ='local'
-                            , force_reload = force_reload, device = device_type) 
-else :
-    model = torch.hub.load('ultralytics/yolov5' , 'custom', path = model_name
-                            , force_reload = force_reload, device = device_type) 
-model.conf, model.iou = conf, iou 
-model.classes = class_detect
+model = setup_model(model_name, force_reload, device_type, conf, iou, class_detect, local_framework)
+# print('Set up Model')
+# if local_framework :
+#     model = torch.hub.load('yolov5', 'custom', path = model_name
+#                             , source ='local'
+#                             , force_reload = force_reload, device = device_type) 
+# else :
+#     model = torch.hub.load('ultralytics/yolov5' , 'custom', path = model_name
+#                             , force_reload = force_reload, device = device_type) 
+# model.conf, model.iou = conf, iou 
+# model.classes = class_detect
 
 # Ensure Folder
 if not os.path.isdir('F03_clip') : os.mkdir('F03_clip')
