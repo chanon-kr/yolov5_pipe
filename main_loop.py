@@ -1,7 +1,7 @@
 from py_topping.run_pipeline import run_pipeline
 from py_topping.general_use import lazy_LINE, timeout
 from git import Repo
-import subprocess, sys, json
+import subprocess, sys, json, gc
 
 @timeout(30)
 def update_yolov5_pipe() :
@@ -41,4 +41,6 @@ def main() :
     print(_['run_result'][0])
 
 if __name__ == '__main__':
-    while True : main()
+    while True : 
+        main()
+        gc.collect()
