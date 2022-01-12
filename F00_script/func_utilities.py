@@ -9,8 +9,8 @@ from py_topping.data_connection.gcp import lazy_GCS
 from glob import glob
 
 def update_local_framework() :
-    if os.path.isdir('ultralytics') : os.makedirs('ultralytics')
     base_dir = os.getcwd()
+    if os.path.isdir('ultralytics') : os.makedirs(os.path.join(base_dir,'ultralytics'))
     os.chdir('ultralytics')
     if os.path.isdir('yolov5') : 
         print('Update YOLOv5 from Ultralytics')
