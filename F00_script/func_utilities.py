@@ -8,27 +8,55 @@ from py_topping.data_connection.database import lazy_SQL
 from py_topping.data_connection.gcp import lazy_GCS
 from glob import glob
 
+from threading import Thread
+import functools
+
+def timeout(timeout):
+    def deco(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            res = [Exception('function [%s] timeout [%s seconds] exceeded!' % (func.__name__, timeout))]
+            def newFunc():
+                try:
+                    res[0] = func(*args, **kwargs)
+                except Exception as e:
+                    res[0] = e
+            t = Thread(target=newFunc)
+            t.daemon = True
+            try:
+                t.start()
+                t.join(timeout)
+            except Exception as je:
+                print ('error starting thread')
+                raise je
+            ret = res[0]
+            if isinstance(ret, BaseException):
+                raise ret
+            return ret
+        return wrapper
+    return deco
+
 def update_local_framework() :
-    base_dir = os.getcwd()
-    if not os.path.isdir('ultralytics') : os.makedirs(os.path.join(base_dir,'ultralytics'))
+    if not os.path.isdir('ultralytics') : os.makedirs(os.path.join(os.getcwd(),'ultralytics'))
     os.chdir('ultralytics')
     if os.path.isdir('yolov5') : 
         print('Update YOLOv5 from Ultralytics')
         os.chdir('yolov5')
-        try : 
-            repo = Repo()
-            repo.remotes.origin.pull(kill_after_timeout = 60)
-        except : pass
+        repo = Repo()
+        repo.remotes.origin.pull()
     else :
         print('Clone YOLOv5 from Ultralytics')
         yolov5_url = 'https://github.com/ultralytics/yolov5.git'
-        Repo.clone_from(yolov5_url , os.path.join(os.getcwd(),'yolov5'), kill_after_timeout = 60)
-        os.chdir(base_dir)
+        Repo.clone_from(yolov5_url , os.path.join(os.getcwd(),'yolov5'))
 
 def setup_model(model_name, force_reload, device_type, conf, iou, class_detect, local_framework) :
     print('Set up Model')
     if local_framework :
-        update_local_framework()
+        base_dir = os.getcwd()
+        t_update_local_framework = timeout(timeout=30)(update_local_framework)
+        os.chdir(base_dir)
+        try : t_update_local_framework()
+        except : print('Update Fail')
         model = torch.hub.load('ultralytics/yolov5', 'custom', path = model_name
                                 , source ='local'
                                 , force_reload = force_reload, device = device_type) 
