@@ -17,7 +17,12 @@ for i in file_name :
 
 # Update Dependencies
 import subprocess, sys
-update_list = [['-qr','https://raw.githubusercontent.com/ultralytics/yolov5/master/requirements.txt']
+try :
+    print('Update Script requirements_ultralytic.txt')
+    r = requests.get('https://raw.githubusercontent.com/ultralytics/yolov5/master/requirements.txt', timeout = 20)
+    with open('F00_script/requirements_ultralytic.txt' , 'wb') as f : f.write(r.content)
+except : pass
+update_list = [['-r','F00_script/requirements_ultralytic.txt']
                ,['-r','F00_script/requirements.txt']]
 for i in update_list :
     print('Update Dependencies from ',i[1])
