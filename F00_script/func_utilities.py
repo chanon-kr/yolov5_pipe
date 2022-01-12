@@ -1,4 +1,5 @@
 import cv2, os, torch
+from git import Repo
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
@@ -7,9 +8,27 @@ from py_topping.data_connection.database import lazy_SQL
 from py_topping.data_connection.gcp import lazy_GCS
 from glob import glob
 
+def update_local_framework() :
+    if os.path.isdir('ultralytics') : os.makedirs('ultralytics')
+    base_dir = os.getcwd()
+    os.chdir('ultralytics')
+    if os.path.isdir('yolov5') : 
+        print('Update YOLOv5 from Ultralytics')
+        os.chdir('yolov5')
+        try : 
+            repo = Repo()
+            repo.remotes.origin.pull(kill_after_timeout = 60)
+        except : pass
+    else :
+        print('Clone YOLOv5 from Ultralytics')
+        yolov5_url = 'https://github.com/ultralytics/yolov5.git'
+        Repo.clone_from(yolov5_url , os.path.join(os.getcwd(),'yolov5'), kill_after_timeout = 60)
+        os.chdir(base_dir)
+
 def setup_model(model_name, force_reload, device_type, conf, iou, class_detect, local_framework) :
     print('Set up Model')
     if local_framework :
+        update_local_framework()
         model = torch.hub.load('ultralytics/yolov5', 'custom', path = model_name
                                 , source ='local'
                                 , force_reload = force_reload, device = device_type) 
