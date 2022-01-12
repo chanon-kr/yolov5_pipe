@@ -1,6 +1,6 @@
 openpyxl
 sqlalchemy
-py-topping
+py-topping>=0.3.14
 psutil
 google-cloud-storage
 pymysql
