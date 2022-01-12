@@ -29,7 +29,6 @@ def setup_model(model_name, force_reload, device_type, conf, iou, class_detect, 
         try : update_local_framework()
         except : print('Update Fail')
         os.chdir(base_dir)
-        print(os.getcwd())
         model = torch.hub.load(os.path.join(base_dir,'ultralytics','yolov5'), 'custom'
                                 , path = model_name, source ='local'
                                 , force_reload = force_reload, device = device_type) 
