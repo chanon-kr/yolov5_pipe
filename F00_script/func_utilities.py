@@ -49,9 +49,9 @@ def cal_fps(now_input, fps_list_input, show = True):
     return fps_list_input, fps
 
 def send_LINE(target_in , line_token_in, path_in) :
+    print('Send Line Message\n---\n{}'.format(target_in))
     line = lazy_LINE(line_token_in)
     line.send(target_in, picture = path_in)
-
 
 def label_image(frame_in, df_in , area_detect_in ) :
     # Add rectangle of Applied Area
