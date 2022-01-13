@@ -169,11 +169,12 @@ def main_script() :
             # Set image output
             if area_detection : show_image = label_image(frame , df, [(x2,y2), (x1,y1)])
             else : show_image = results.render()[0]
-            cv2.imshow('Object detector', show_image)
+            resize_image = cv2.resize(show_image, (resize_width, resize_height))
+            cv2.imshow('Object detector', resize_image)
 
             # Save result
             record_result(df, temp_table, local_record_config)
-            resize_image = cv2.resize(show_image, (resize_width, resize_height))
+#             resize_image = cv2.resize(show_image, (resize_width, resize_height))
             out_video.write(resize_image)
 
             # Notification
