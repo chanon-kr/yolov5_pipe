@@ -22,6 +22,12 @@ def main_script() :
     show_fps = int(input_df.get('show_fps','0'))
     video_source = input_df.get('video_source','0')
     if video_source.replace('.','',1).isdigit() : video_source = int(video_source)
+    show_size = float(input_df.get('show_size','0.5'))
+    if show_size > 0 :
+        display_output = True
+        if show_size == 1 : resize_show = False
+        else : resize_show = True
+    else : display_output, resize_show  = False, False
 
     ## MODEL
     model_source = input_df.get('model_source','')
@@ -128,6 +134,7 @@ def main_script() :
 
     # Cal Resize
     resize_width, resize_height = int(int(imW)*resize) , int(int(imH)*resize)
+    resize_width_show, resize_height_show = int(int(imW)*show_size) , int(int(imH)*show_size)
 
     # Utility
     fps_list,now, frame_no = [],datetime.now(), 0
@@ -169,12 +176,15 @@ def main_script() :
             # Set image output
             if area_detection : show_image = label_image(frame , df, [(x2,y2), (x1,y1)])
             else : show_image = results.render()[0]
-            resize_image = cv2.resize(show_image, (resize_width, resize_height))
-            cv2.imshow('Object detector', resize_image)
+            if display_output :
+                if resize_show :
+                    resize_image = cv2.resize(show_image, (resize_width_show, resize_height_show))
+                    cv2.imshow('Object detector', resize_image)
+                else : cv2.imshow('Object detector', show_image)
 
             # Save result
             record_result(df, temp_table, local_record_config)
-#             resize_image = cv2.resize(show_image, (resize_width, resize_height))
+            resize_image = cv2.resize(show_image, (resize_width, resize_height))
             out_video.write(resize_image)
 
             # Notification
