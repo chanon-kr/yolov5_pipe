@@ -22,6 +22,9 @@ while(video.isOpened()):
         else :
             print('Reached the end of the video!')
             break
+    # Show
+    frame = cv2.resize(frame, (400, 400))
+    cv2.imshow('Object detector', frame)
     # Press 'q' to quit
     if cv2.waitKey(1) == ord('q'): break
 
