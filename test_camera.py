@@ -9,6 +9,7 @@ input_df = input_df[input_df['value'] != '']['value'].to_dict()
 # Get Video Source
 video_source = input_df.get('video_source','0')
 if video_source.replace('.','',1).isdigit() : video_source = int(video_source)
+reconnect_video = int(input_df.get('reconnect_video','1'))
 
 # Read Video
 video = cv2.VideoCapture(video_source)
@@ -17,8 +18,10 @@ while(video.isOpened()):
     # Check
     ret, frame = video.read()
     if not ret:
-        print('Reached the end of the video!')
-        break
+        if reconnect_video : continue
+        else :
+            print('Reached the end of the video!')
+            break
     # Press 'q' to quit
     if cv2.waitKey(1) == ord('q'): break
 
