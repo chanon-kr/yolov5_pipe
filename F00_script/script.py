@@ -28,6 +28,7 @@ def main_script() :
         if show_size == 1 : resize_show = False
         else : resize_show = True
     else : display_output, resize_show  = False, False
+    reconnect_video = int(input_df.get('reconnect_video','1'))
 
     ## MODEL
     model_source = input_df.get('model_source','')
@@ -156,8 +157,10 @@ def main_script() :
             now = datetime.now()
             ret, frame = video.read()
             if not ret:
-                print('Reached the end of the video!')
-                break
+                if reconnect_video : continue
+                else :
+                    print('Reached the end of the video!')
+                    break
 
             # Inference
             results = model(frame[y1:y2,x1:x2], size = predict_size)
