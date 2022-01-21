@@ -23,7 +23,7 @@ def update_all() :
         except : pass
     return 1
 
-@timeout(10*60)
+@timeout(15*60)
 def main() :
     # Update All
     _ = update_all()
