@@ -88,14 +88,15 @@ def send_LINE(target_in , line_token_in, path_in) :
 def label_image(frame_in, df_in , area_detect_in ) :
     # Add rectangle of Applied Area
     x1_in, y1_in = area_detect_in[1]
-    frame_out = cv2.rectangle(frame_in, area_detect_in[0], area_detect_in[1], (0, 255, 255), 2)
+    frame_out = frame_in[:]
+    cv2.rectangle(frame_out, area_detect_in[0], area_detect_in[1], (0, 255, 255), 2)
     for i_ in df_in.index :
         # Draw Box
         ymin = int(df_in.loc[i_, 'ymin'] + y1_in)
         xmin = int(df_in.loc[i_, 'xmin'] + x1_in)
         ymax = int(df_in.loc[i_, 'ymax'] + y1_in)
         xmax = int(df_in.loc[i_, 'xmax'] + x1_in)
-        frame_out = cv2.rectangle(frame_out, (xmin,ymin), (xmax,ymax), (10, 255, 0), 4) 
+        cv2.rectangle(frame_out, (xmin,ymin), (xmax,ymax), (10, 255, 0), 4) 
         # Draw label
         label = '%s: %d%%' % (df_in.loc[i_, 'name'], int(df_in.loc[i_, 'confidence']*100))
         labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2) 
