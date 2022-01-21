@@ -177,8 +177,11 @@ def main_script() :
             current_found = list(df['name'].unique())
 
             # Set image output
-            if area_detection : show_image = label_image(frame , df, [(x2,y2), (x1,y1)])
-            else : show_image = results.render()[0]
+            show_image = frame[:] # Try
+            show_image[y1:y2,x1:x2] = results.render()[0] # Try
+            cv2.rectangle(show_image, (x2,y2), (x1,y1), (0, 255, 255), 2) # Try
+            # if area_detection : show_image = label_image(frame , df, [(x2,y2), (x1,y1)])
+            # else : show_image = results.render()[0]
             if display_output :
                 if resize_show :
                     resize_image = cv2.resize(show_image, (resize_width_show, resize_height_show))
