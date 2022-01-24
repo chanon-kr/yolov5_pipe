@@ -70,8 +70,9 @@ def modify_df(df_in, now_in, fps_in, frame_no_in, start_time_in, slot_time_in, j
 
 def cal_fps(now_input, fps_list_input, show = True):
     fps_cal = (datetime.now() - now_input).total_seconds()
-    if fps_cal == 0 : fps_cal = 60
-    else : fps_cal = 1/fps_cal
+    # if fps_cal == 0 : fps_cal = 60
+    # else : fps_cal = 1/fps_cal
+    fps_cal = 60 if fps_cal == 0 else 1/fps_cal
     fps_list_input.append(fps_cal)
     fps = round(np.mean(fps_list_input),2)
     if show : print('Average FPS :', fps)
