@@ -48,12 +48,10 @@ def send_heartbeat(process_name_in, table_name_in, heart_beat_config_in, ignore_
                        , mute = True)
     df_sql = pd.DataFrame(healthcheck())
     df_sql['t_stamp'] = datetime.now()
-    df_sql['process_name'] = process_name_in
-    df_sql['error_message'] = error_message_in
-    if ignore_error_in :
-        try : des_sql.sub_dump(df_sql , table_name_in ,'append')
-        except : pass
-    else : des_sql.sub_dump(df_sql , table_name_in ,'append')
+    df_sql['process_name'], df_sql['error_message'] = process_name_in, error_message_in
+    try : des_sql.sub_dump(df_sql , table_name_in ,'append')
+    except Exception as e: 
+        if not ignore_error_in : raise Exception(e)
 
 def modify_df(df_in, now_in, fps_in, frame_no_in, start_time_in, slot_time_in, job_name_in, area_detect_in) :
     df_out = df_in.copy()
