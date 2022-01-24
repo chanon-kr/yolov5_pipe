@@ -58,12 +58,9 @@ def send_heartbeat(process_name_in, table_name_in, heart_beat_config_in, ignore_
 def modify_df(df_in, now_in, fps_in, frame_no_in, start_time_in, slot_time_in, job_name_in, area_detect_in) :
     df_out = df_in.copy()
     x1_in, y1_in = area_detect_in[1]
-    df_out['t_stamp'] = now_in.strftime('%Y-%m-%d %H:%M:%S')
-    df_out['fps'] = fps_in
-    df_out['frame_no'] = frame_no_in
-    df_out['start_time'] = start_time_in
-    df_out['slot_time'] = slot_time_in
-    df_out['job_name'] = job_name_in
+    df_out['t_stamp'], df_out['fps'] = now_in.strftime('%Y-%m-%d %H:%M:%S'), fps_in
+    df_out['frame_no'], df_out['start_time'] = frame_no_in, start_time_in
+    df_out['slot_time'], df_out['job_name'] = slot_time_in, job_name_in
     df_out['xmin'] += x1_in
     df_out['xmax'] += x1_in
     df_out['ymin'] += y1_in
