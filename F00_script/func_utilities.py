@@ -1,4 +1,4 @@
-import cv2, os, torch
+import cv2, os, torch, shutil
 from git import Repo
 from datetime import datetime, timedelta
 import numpy as np
@@ -155,7 +155,8 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket
                    , bucket_name = bucket_config_in['bucket_name']
                    , credential = bucket_config_in['credential'])
     video_file = glob('{}/*'.format(video_folder_in))
-    current_video_in
+    uploaded_folder = os.path.join(video_folder_in,'uploaded')
+    if not os.path.isdir(uploaded_folder) : os.makedirs(os.path.join(os.getcwd(),uploaded_folder))
     if current_video_in in video_file : video_file.remove(current_video_in)
     np.random.shuffle(video_file)
     folder_len = 1 + len(video_folder_in)
@@ -165,11 +166,11 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket
         if ignore_error_in :
             try :
                 gcs.upload(bucket_file = bucket_file_name , local_file = i_)
-                os.remove(i_)
+                shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
             except : pass
         else :
             gcs.upload(bucket_file = bucket_file_name , local_file = i_)
-            os.remove(i_)
+            shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
             
 def update_model(model_source_in , model_name_in, model_source_config_in) :
     gcs = lazy_GCS(project_id = model_source_config_in['project_id']
