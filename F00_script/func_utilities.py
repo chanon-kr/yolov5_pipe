@@ -169,14 +169,11 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket
     print('Start Upload Video')
     for i_ in video_file :
         bucket_file_name = '{}/{}'.format(bucket_folder_name_in , i_[folder_len:])
-        if ignore_error_in :
-            try :
-                gcs.upload(bucket_file = bucket_file_name , local_file = i_)
-                shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
-            except : pass
-        else :
+        try :
             gcs.upload(bucket_file = bucket_file_name , local_file = i_)
             shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
+        except Exception as e: 
+            if ignore_error_in : raise Exception(e)
     # Remove File
     print('Upload Complete\nDelete Expired Clip(s)')
     remove_uploaded_file(uploaded_folder, video_expire_after)
