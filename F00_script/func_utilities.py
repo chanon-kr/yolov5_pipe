@@ -1,4 +1,4 @@
-import cv2, os, torch, shutil
+import cv2, os, torch, shutil, re
 from git import Repo
 from datetime import datetime, timedelta
 import numpy as np
@@ -149,17 +149,28 @@ def upload_result(temp_table_in , now_in, db_table_in, local_record_config_in, d
         des_sql.sub_dump(df_sql , db_table_in,'append')
         sqlite.engine.execute("""DELETE {}""".format(condition_statement))
 
+def remove_uploaded_file(uploaded_folder, video_expire_after) :
+    video_file = glob('{}/*'.format(uploaded_folder))
+    date_file = [re.search(r'_([\d]+)_',i).group(1) for i in video_file]
+    date_file = [(datetime.now() - datetime.strptime(i, '%Y%m%d')).days for i in date_file]
+    date_file = [i >= video_expire_after for i in date_file]
+    video_file = [i for (i, v) in zip(video_file, date_file) if v]
+    for i_ in video_file : os.remove(i_)
 
-def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket_config_in, ignore_error_in = False) :
+def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket_config_in, ignore_error_in = False, video_expire_after = 5) :
+    # Create Connection
     gcs = lazy_GCS(project_id = bucket_config_in['project_id']
                    , bucket_name = bucket_config_in['bucket_name']
                    , credential = bucket_config_in['credential'])
-    video_file = glob('{}/*'.format(video_folder_in))
+    # Create Uploaded Folder
     uploaded_folder = os.path.join(video_folder_in,'uploaded')
     if not os.path.isdir(uploaded_folder) : os.makedirs(os.path.join(os.getcwd(),uploaded_folder))
+    # Create Video List
+    video_file = glob('{}/*'.format(video_folder_in))
     if current_video_in in video_file : video_file.remove(current_video_in)
     np.random.shuffle(video_file)
     folder_len = 1 + len(video_folder_in)
+    # Main Upload Loop
     print('Start Upload Video')
     for i_ in video_file :
         bucket_file_name = '{}/{}'.format(bucket_folder_name_in , i_[folder_len:])
@@ -171,6 +182,8 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket
         else :
             gcs.upload(bucket_file = bucket_file_name , local_file = i_)
             shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
+    # Remove File
+    remove_uploaded_file(video_folder_in, video_expire_after)
             
 def update_model(model_source_in , model_name_in, model_source_config_in) :
     gcs = lazy_GCS(project_id = model_source_config_in['project_id']
