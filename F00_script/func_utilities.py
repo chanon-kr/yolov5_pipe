@@ -61,10 +61,8 @@ def modify_df(df_in, now_in, fps_in, frame_no_in, start_time_in, slot_time_in, j
     df_out['t_stamp'], df_out['fps'] = now_in.strftime('%Y-%m-%d %H:%M:%S'), fps_in
     df_out['frame_no'], df_out['start_time'] = frame_no_in, start_time_in
     df_out['slot_time'], df_out['job_name'] = slot_time_in, job_name_in
-    df_out['xmin'] += x1_in
-    df_out['xmax'] += x1_in
-    df_out['ymin'] += y1_in
-    df_out['ymax'] += y1_in
+    for i_ in ['xmin','xmax'] : df_out[i_] += x1_in
+    for i_ in ['ymin','ymax'] : df_out[i_] += y1_in
     df_out['area'] = str(area_detect_in)
     return df_out
 
