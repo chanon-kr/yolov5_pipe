@@ -142,7 +142,7 @@ def upload_result(temp_table_in , now_in, db_table_in, local_record_config_in, d
         des_sql.sub_dump(df_sql , db_table_in,'append')
         sqlite.engine.execute("""DELETE {}""".format(condition_statement))
     except Exception as e: 
-        if ignore_error_in : raise Exception(e)
+        if not ignore_error_in : raise Exception(e)
 
 def remove_uploaded_file(uploaded_folder, video_expire_after) :
     video_file = glob('{}/*'.format(uploaded_folder))
@@ -173,7 +173,7 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket
             gcs.upload(bucket_file = bucket_file_name , local_file = i_)
             shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
         except Exception as e: 
-            if ignore_error_in : raise Exception(e)
+            if not ignore_error_in : raise Exception(e)
     # Remove File
     print('Upload Complete\nDelete Expired Clip(s)')
     remove_uploaded_file(uploaded_folder, video_expire_after)
