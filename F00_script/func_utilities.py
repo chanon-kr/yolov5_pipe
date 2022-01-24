@@ -166,7 +166,7 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket
     uploaded_folder = os.path.join(video_folder_in,'uploaded')
     if not os.path.isdir(uploaded_folder) : os.makedirs(os.path.join(os.getcwd(),uploaded_folder))
     # Create Video List
-    video_file = glob('{}/*'.format(video_folder_in))
+    video_file = glob('{}/*.*'.format(video_folder_in))
     if current_video_in in video_file : video_file.remove(current_video_in)
     np.random.shuffle(video_file)
     folder_len = 1 + len(video_folder_in)
