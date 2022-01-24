@@ -183,6 +183,7 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket
             gcs.upload(bucket_file = bucket_file_name , local_file = i_)
             shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
     # Remove File
+    print('Upload Complete\nDelete Expired Clip(s)')
     remove_uploaded_file(uploaded_folder, video_expire_after)
             
 def update_model(model_source_in , model_name_in, model_source_config_in) :
