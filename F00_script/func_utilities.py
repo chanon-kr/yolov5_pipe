@@ -102,7 +102,7 @@ def label_image(frame_in, df_in , area_detect_in ) :
 
 def flush_old(flush, local_record_config_in, temp_table_in) :
     if flush : 
-        clean_folder = glob('clip/*')
+        clean_folder = glob('F03_clip/*.*')
         for i in clean_folder : os.remove(i)
         sqlite = lazy_SQL(sql_type = local_record_config_in['type'] 
                         , host_name = local_record_config_in['host_name']
