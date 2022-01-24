@@ -107,7 +107,7 @@ def main_script() :
 
 
     # Start!!!
-    if turn_on_heartbeat : send_heartbeat('Start Prep Phase', heart_table_name, heart_beat_config, ignore_error_in = False)
+    if turn_on_heartbeat : send_heartbeat('Start Prep Phase', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
 
     # Update Model
     if turn_on_update_model : update_model(model_source , model_name, model_source_config)
@@ -147,7 +147,7 @@ def main_script() :
     current_video = os.path.join('F03_clip','clip_{}.avi'.format(slot_time.strftime('%Y%m%d_%H%M')))
     out_video = cv2.VideoWriter(current_video, cv2.VideoWriter_fourcc(*'DIVX')  ,record_fps  ,(resize_width, resize_height))
 
-    if turn_on_heartbeat : send_heartbeat('Start Loop Phase', heart_table_name, heart_beat_config, ignore_error_in = False)
+    if turn_on_heartbeat : send_heartbeat('Start Loop Phase', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
 
     # --Loop Phase--
     print('Start Main Loop')
@@ -217,10 +217,10 @@ def main_script() :
                 if upload_check > upload_minute :
                     print('--- Start Upload ---')
                     upload_time = now
-                    if turn_on_heartbeat : send_heartbeat('Start Upload', heart_table_name, heart_beat_config, ignore_error_in = False)
+                    if turn_on_heartbeat : send_heartbeat('Start Upload', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
                     if turn_on_upload_db : upload_result(temp_table , now, db_table, local_record_config, db_record_config, ignore_error)
                     if turn_on_upload_clip : upload_clip('F03_clip', current_video, bucket_folder_name, bucket_config, ignore_error)
-                    if turn_on_heartbeat : send_heartbeat('End Upload', heart_table_name, heart_beat_config, ignore_error_in = False)
+                    if turn_on_heartbeat : send_heartbeat('End Upload', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
                     print('--- Finish Upload ---')
                 # Restart
                 restart_check = (now - start_time).total_seconds()/60
@@ -236,7 +236,7 @@ def main_script() :
         error_message, callback_trigger = str(e), True
         long_error = str(traceback.format_exc())
 
-    if turn_on_heartbeat : send_heartbeat('Start Release Phase', heart_table_name, heart_beat_config, ignore_error_in = False)
+    if turn_on_heartbeat : send_heartbeat('Start Release Phase', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
 
     # --Release Phase--
     print('Start Release Phase')
@@ -250,7 +250,7 @@ def main_script() :
         print(error_message)
         error_df = pd.DataFrame({'t_stamp' : datetime.now() , 'error' : [error_message]})
         record_result(error_df, 'error_log', local_record_config)
-        if turn_on_heartbeat : send_heartbeat('Callback Phase', heart_table_name, heart_beat_config, ignore_error_in = False, error_message_in = long_error)
+        if turn_on_heartbeat : send_heartbeat('Callback Phase', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name, error_message_in = long_error)
         send_LINE('\n---\n{}\n---\n{}'.format(job_name, error_message) , error_token, '')
 
 main_script()
