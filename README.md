@@ -1,5 +1,9 @@
 # YOLOv5_Pipe
-## Python Code to Deploy YOLOv5 on Windows
+## Python Code to Deploy YOLOv5 
+
+## For Windows
+
+## For Jetson Nano
 
 1. Download or Clone this repository
 2. In folder "F01", remove prefix "blank_" of every file
