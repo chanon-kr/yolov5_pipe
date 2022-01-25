@@ -8,6 +8,7 @@
 ```
 git clone https://github.com/chanon-kr/yolov5_pipe.git
 cd yolov5_pipe
+bash install_linux.sh
 ```
 
 1. Download or Clone this repository
