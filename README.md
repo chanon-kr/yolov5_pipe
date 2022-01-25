@@ -3,8 +3,8 @@
 
 ## For Windows
 1. Create Virtual Environment or just use WinPython
-2. Install dependencies as listed in install_windows.txt
-```pip install -r install_windows.txt```
+2. Install dependencies as listed in install_windows.txt <br>
+```pip install -r install_windows.txt```<br>
 3. Download or Clone this repository
 4. In folder "F01", remove prefix "blank_" of every file
 5. Place your model in folder "F02"
