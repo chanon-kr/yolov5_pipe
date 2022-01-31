@@ -1,8 +1,12 @@
 {
-    "error_token" : "",
-    "error_name" : "",
-    "local_framework" : 0,
-    "force_reload" : 1,
+    "error": {
+        "error_token": "",
+        "error_name": ""
+    },
+    "framework": {
+        "local_framework": 0,
+        "force_reload": 1
+    },
     "local_record_config": {
         "type": "sqlite",
         "host_name": "local_result.db"
@@ -14,15 +18,33 @@
         "user": "",
         "password": ""
     },
-    "bucket_config": {
-        "project_id": "",
-        "bucket_name": "",
-        "credential": ""
+    "storage_config": {
+        "gcs": {
+            "project_id": "",
+            "bucket_name": "",
+            "credential": ""
+        },
+        "sharepoint365": {
+            "site_url": "",
+            "client_id": "",
+            "client_secret": "",
+            "user": "",
+            "password": ""
+        }
     },
     "model_source_config": {
-        "project_id": "",
-        "bucket_name": "",
-        "credential": ""
+        "gcs": {
+            "project_id": "",
+            "bucket_name": "",
+            "credential": ""
+        },
+        "sharepoint365": {
+            "site_url": "",
+            "client_id": "",
+            "client_secret": "",
+            "user": "",
+            "password": ""
+        }
     },
     "heart_beat_config": {
         "type": "",
@@ -30,7 +52,7 @@
         "db_name": "",
         "user": "",
         "password": "",
-        "table_name": ""
-    },
-    "heart_table_name": ""
+        "table_name": "",
+        "heart_table_name": ""
+    }
 }

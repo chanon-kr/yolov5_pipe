@@ -149,7 +149,8 @@ def remove_uploaded_file(uploaded_folder, video_expire_after) :
     video_file = [i for (i, v) in zip(video_file, date_file) if v]
     for i_ in video_file : os.remove(i_)
 
-def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket_config_in, ignore_error_in = False, video_expire_after = 5) :
+def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, storage_config_in, ignore_error_in = False, video_expire_after = 5) :
+    bucket_config_in = storage_config_in['gcs']
     # Create Connection
     gcs = lazy_GCS(project_id = bucket_config_in['project_id']
                    , bucket_name = bucket_config_in['bucket_name']
@@ -176,7 +177,7 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, bucket
     remove_uploaded_file(uploaded_folder, video_expire_after)
             
 def update_model(model_source_in , model_name_in, model_source_config_in) :
-    gcs = lazy_GCS(project_id = model_source_config_in['project_id']
-                   , bucket_name = model_source_config_in['bucket_name']
-                   , credential = model_source_config_in['credential'])
+    gcs = lazy_GCS(project_id = model_source_config_in['gcs']['project_id']
+                   , bucket_name = model_source_config_in['gcs']['bucket_name']
+                   , credential = model_source_config_in['gcs']['credential'])
     gcs.download(bucket_file = model_source_in, local_file = model_name_in)

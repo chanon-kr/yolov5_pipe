@@ -83,14 +83,14 @@ def main_script() :
     with open('F01_config/advance_config.json') as f :
         input_json = json.load(f)
 
-    local_framework = int(input_json.get('local_framework','0'))
-    force_reload = int(input_json.get('force_reload','1'))
+    local_framework = int(input_json.get('framework',{}).get('local_framework','0'))
+    force_reload = int(input_json.get('framework',{}).get('force_reload','1'))
     local_record_config = input_json.get('local_record_config',{"type": "sqlite","host_name": "local_result.db"})
     db_record_config = input_json.get('db_record_config','')
-    bucket_config = input_json.get('bucket_config','')
+    storage_config = input_json.get('storage_config','')
     model_source_config = input_json.get('model_source_config','')
     heart_beat_config = input_json.get('heart_beat_config','')
-    heart_table_name = input_json.get('heart_table_name','')
+    heart_table_name = input_json.get('heart_beat_config',{}).get('heart_table_name','')
     error_token = input_json.get('error_token','')
 
     # On/Off
@@ -99,7 +99,7 @@ def main_script() :
     turn_on_update_model = (model_source != '') & (model_source_config != '')
     ## Upload config
     turn_on_upload_db = (db_table != '') & (db_record_config != '')
-    turn_on_upload_clip = (bucket_folder_name != '') & (bucket_config != '')
+    turn_on_upload_clip = (bucket_folder_name != '') & (storage_config != '')
     ## Advanace config
     turn_on_heartbeat = (heart_beat_config != '') & (heart_table_name != '')
     turn_on_local_record = (local_record_config != '')
@@ -233,7 +233,7 @@ def main_script() :
                     upload_time = now
                     if turn_on_heartbeat : send_heartbeat('Start Upload', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
                     if turn_on_upload_db : upload_result(temp_table , now, db_table, local_record_config, db_record_config, ignore_error )
-                    if turn_on_upload_clip : upload_clip('F03_clip', current_video, bucket_folder_name, bucket_config, ignore_error , video_expire_after = video_expire_after)
+                    if turn_on_upload_clip : upload_clip('F03_clip', current_video, bucket_folder_name, storage_config, ignore_error , video_expire_after = video_expire_after)
                     if turn_on_heartbeat : send_heartbeat('End Upload', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
                     print('--- Finish Upload ---')
                 # Restart

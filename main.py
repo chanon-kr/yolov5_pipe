@@ -30,8 +30,8 @@ def main() :
     # Get Name
     with open('F01_config/advance_config.json') as f :
         input_json = json.load(f)
-    error_token = input_json.get('error_token','')
-    error_name = input_json.get('error_name','')
+    error_token = input_json.get('error',{}).get('error_token','')
+    error_name = input_json.get('error',{}).get('error_name','')
     del input_json
     # Run Script
     pipeline_line = lazy_LINE(error_token)
