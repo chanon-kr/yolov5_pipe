@@ -53,6 +53,7 @@ def send_heartbeat(process_name_in, table_name_in, heart_beat_config_in, ignore_
     try : des_sql.sub_dump(df_sql , table_name_in ,'append')
     except Exception as e: 
         if not ignore_error_in : raise Exception(e)
+        print(e)
 
 def modify_df(df_in, now_in, fps_in, frame_no_in, start_time_in, slot_time_in, job_name_in, area_detect_in) :
     df_out = df_in.copy()
@@ -140,6 +141,7 @@ def upload_result(temp_table_in , now_in, db_table_in, local_record_config_in, d
         sqlite.engine.execute("""DELETE {}""".format(condition_statement))
     except Exception as e: 
         if not ignore_error_in : raise Exception(e)
+        print(e)
 
 def remove_uploaded_file(uploaded_folder, video_expire_after) :
     video_file = glob('{}/*'.format(uploaded_folder))
@@ -172,6 +174,7 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, storag
             shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
         except Exception as e: 
             if not ignore_error_in : raise Exception(e)
+            print(e)
     # Remove File
     print('Upload Complete\nDelete Expired Clip(s)')
     remove_uploaded_file(uploaded_folder, video_expire_after)
