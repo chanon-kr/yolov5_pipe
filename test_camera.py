@@ -2,9 +2,13 @@ import pandas as pd
 import cv2
 
 # Read Input File
-input_df = pd.read_excel('F01_config/config.xlsx', sheet_name = 'config'
-                        , dtype = str, index_col='parameter')[['value']].fillna('')
-input_df = input_df[input_df['value'] != '']['value'].to_dict()
+try :
+    input_df = pd.read_excel('F01_config/config.xlsx', sheet_name = 'config'
+                            , dtype = str, index_col='parameter')[['value']].fillna('')
+    input_df = input_df[input_df['value'] != '']['value'].to_dict()
+except :
+    video_source = str(input('Input video source : '))
+    input_df = {'video_source' : video_source}
 
 # Get Video Source
 video_source = input_df.get('video_source','0')
@@ -13,7 +17,6 @@ reconnect_video = int(input_df.get('reconnect_video','1'))
 
 # Read Video
 video = cv2.VideoCapture(video_source)
-
 while(video.isOpened()):
     # Check
     ret, frame = video.read()
