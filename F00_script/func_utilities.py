@@ -171,14 +171,14 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, storag
     for i_ in video_file :
         bucket_file_name = '{}/{}'.format(bucket_folder_name_in , i_[folder_len:])
         try :
-            print(bucket_file_name)
+            # print(bucket_file_name) ## For Debug
             gcs.upload(bucket_file = bucket_file_name , local_file = i_)
             shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
         except Exception as e: 
             if not ignore_error_in : raise Exception(e)
             print(e)
     # Remove File
-    # print('Upload Complete\nDelete Expired Clip(s)')  ## For Debug
+    print('Upload Complete\nDelete Expired Clip(s)')  
     remove_uploaded_file(uploaded_folder, video_expire_after)
             
 def update_model(model_source_in , model_name_in, model_source_config_in) :
