@@ -77,7 +77,7 @@ def main_script() :
     restart_minute = int(input_df.get('restart_minute','60'))
     upload_minute = int(input_df.get('upload_minute','10'))
 
-    del input_df
+    
 
     ## Advance Parameter
     with open('F01_config/advance_config.json') as f :
@@ -93,8 +93,6 @@ def main_script() :
     heart_table_name = input_json.get('heart_table_name','')
     error_token = input_json.get('error_token','')
 
-    del input_json
-
     # On/Off
     ## User config
     turn_on_line = (line_token != '')
@@ -109,7 +107,11 @@ def main_script() :
 
 
     # Start!!!
-    if turn_on_heartbeat : send_heartbeat('Start Prep Phase', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
+    if turn_on_heartbeat : 
+        start_message = json.dumps({'basic' : input_df , 'advance' : input_json})
+        send_heartbeat('Start Prep Phase', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name, message_in = start_message)
+        del start_message
+    del input_df, input_json
 
     # Update Model
     if turn_on_update_model : update_model(model_source , model_name, model_source_config)
@@ -262,7 +264,7 @@ def main_script() :
         print(error_message)
         error_df = pd.DataFrame({'t_stamp' : datetime.now() , 'error' : [error_message]})
         record_result(error_df, 'error_log', local_record_config)
-        if turn_on_heartbeat : send_heartbeat('Callback Phase', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name, error_message_in = long_error)
+        if turn_on_heartbeat : send_heartbeat('Callback Phase', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name, message_in = long_error)
         send_LINE('\n---\n{}\n---\n{}'.format(job_name, error_message) , error_token, '')
 
 main_script()

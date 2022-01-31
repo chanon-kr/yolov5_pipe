@@ -39,7 +39,7 @@ def setup_model(model_name, force_reload, device_type, conf, iou, class_detect, 
     model.classes = class_detect
     return model
 
-def send_heartbeat(process_name_in, table_name_in, heart_beat_config_in, ignore_error_in = False, job_name_in = '', error_message_in = '') :
+def send_heartbeat(process_name_in, table_name_in, heart_beat_config_in, ignore_error_in = False, job_name_in = '', message_in = '') :
     des_sql = lazy_SQL(sql_type = heart_beat_config_in['type'] 
                        , host_name = heart_beat_config_in['host_name']
                        , database_name = heart_beat_config_in['db_name'] 
@@ -48,7 +48,7 @@ def send_heartbeat(process_name_in, table_name_in, heart_beat_config_in, ignore_
                        , mute = True)
     df_sql = pd.DataFrame(healthcheck())
     df_sql['t_stamp'] = datetime.now()
-    df_sql['process_name'], df_sql['error_message'] = process_name_in, error_message_in
+    df_sql['process_name'], df_sql['error_message'] = process_name_in, message_in
     df_sql['job_name'] = job_name_in
     try : des_sql.sub_dump(df_sql , table_name_in ,'append')
     except Exception as e: 
