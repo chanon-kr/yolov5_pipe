@@ -154,6 +154,7 @@ def remove_uploaded_file(uploaded_folder, video_expire_after) :
 def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, storage_config_in, ignore_error_in = False, video_expire_after = 5) :
     bucket_config_in = storage_config_in['gcs']
     # Create Connection
+    print(bucket_config_in)
     gcs = lazy_GCS(project_id = bucket_config_in['project_id']
                    , bucket_name = bucket_config_in['bucket_name']
                    , credential = bucket_config_in['credential'])
@@ -170,6 +171,7 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, storag
     for i_ in video_file :
         bucket_file_name = '{}/{}'.format(bucket_folder_name_in , i_[folder_len:])
         try :
+            print(bucket_file_name)
             gcs.upload(bucket_file = bucket_file_name , local_file = i_)
             shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
         except Exception as e: 
