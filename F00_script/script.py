@@ -56,6 +56,7 @@ def main_script() :
 
     ## Alert Logic
     line_token = input_df.get('line_token','')
+    alert_conf = float(input_df.get('alert_conf','0.7'))
     alert_frame = int(input_df.get('alert_frame','3'))
     decision_frame = int(input_df.get('decision_frame','5'))
 
@@ -194,8 +195,8 @@ def main_script() :
             out_video.write(resize_image)
 
             # Notification
-            for i in current_found :
-                frame_found = (df_all['name'] == i).sum()
+            for i in current_found :      
+                frame_found = ((df_all['name'] == i) & (df_all['confidence'] >= alert_conf)).sum()
                 if frame_found >= alert_frame :
                     # Save Image
                     cv2.imwrite('send_noti.jpg' , resize_image)
