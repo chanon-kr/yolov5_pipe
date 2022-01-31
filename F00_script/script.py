@@ -66,6 +66,7 @@ def main_script() :
     record_fps = int(input_df.get('record_fps','5'))
     resize = float(input_df.get('resize','1'))
     video_expire_after = int(input_df.get('video_expire_after','5'))
+    detected_saveforever = int(input_df.get('detected_saveforever','0'))
     ## Cloud Upload
     db_table = input_df.get('db_table','')
     bucket_folder_name = input_df.get('bucket_folder_name','')
@@ -118,6 +119,9 @@ def main_script() :
 
     # Ensure Folder
     if not os.path.isdir('F03_clip') : os.mkdir('F03_clip')
+    if detected_saveforever :
+        folder_detected_saveforever = os.path.join('F03_clip','detected')
+        if not os.path.isdir(os.path.join(folder_detected_saveforever)) : os.mkdir(folder_detected_saveforever)
 
     # Flush Old Data if needed
     flush_old(flush, local_record_config, temp_table)
@@ -143,6 +147,7 @@ def main_script() :
     df_all = pd.DataFrame()
     start_time, slot_time, upload_time = now, now, now
     callback_trigger = False
+    create_detected_saveforever = 0
 
     # Create Video
     current_video = os.path.join('F03_clip','clip_{}.avi'.format(slot_time.strftime('%Y%m%d_%H%M')))
@@ -195,7 +200,8 @@ def main_script() :
             out_video.write(resize_image)
 
             # Notification
-            for i in current_found :      
+            for i in current_found :
+                if detected_saveforever : create_detected_saveforever = 1
                 frame_found = ((df_all['name'] == i) & (df_all['confidence'] >= alert_conf)).sum()
                 if frame_found >= alert_frame :
                     # Save Image
@@ -210,6 +216,11 @@ def main_script() :
             if slot_check > slot_minute :
                 # End current video and start new
                 out_video.release()
+                # Save detected video
+                if create_detected_saveforever :
+                    shutil.move(current_video , current_video.replace('F03_clip', folder_detected_saveforever))
+                    create_detected_saveforever = 0
+                # Start New Video
                 slot_time = now
                 current_video = os.path.join('F03_clip','clip_{}.avi'.format(slot_time.strftime('%Y%m%d_%H%M')))
                 out_video = cv2.VideoWriter(current_video, cv2.VideoWriter_fourcc(*'DIVX')  ,record_fps  ,(resize_width, resize_height))
