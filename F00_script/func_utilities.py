@@ -154,7 +154,7 @@ def remove_uploaded_file(uploaded_folder, video_expire_after) :
 def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, storage_config_in, ignore_error_in = False, video_expire_after = 5) :
     bucket_config_in = storage_config_in['gcs']
     # Create Connection
-    print(bucket_config_in)
+    # print(bucket_config_in) ## For Debug
     gcs = lazy_GCS(project_id = bucket_config_in['project_id']
                    , bucket_name = bucket_config_in['bucket_name']
                    , credential = bucket_config_in['credential'])
@@ -178,7 +178,7 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, storag
             if not ignore_error_in : raise Exception(e)
             print(e)
     # Remove File
-    print('Upload Complete\nDelete Expired Clip(s)')
+    # print('Upload Complete\nDelete Expired Clip(s)')  ## For Debug
     remove_uploaded_file(uploaded_folder, video_expire_after)
             
 def update_model(model_source_in , model_name_in, model_source_config_in) :
