@@ -220,7 +220,7 @@ def main_script() :
                 out_video.release()
                 # Save detected video
                 if create_detected_saveforever :
-                    shutil.move(current_video , current_video.replace('F03_clip', folder_detected_saveforever))
+                    shutil.copy(current_video , current_video.replace('F03_clip', folder_detected_saveforever))
                     create_detected_saveforever = 0
                 # Start New Video
                 slot_time = now
