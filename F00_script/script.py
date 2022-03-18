@@ -160,6 +160,7 @@ def main_script() :
     # --Loop Phase--
     print('Start Main Loop')
     try :
+        temp_video = None
         while(video.isOpened()):
             # Begin
             now = datetime.now()
