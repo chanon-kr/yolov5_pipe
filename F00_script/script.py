@@ -189,7 +189,7 @@ def main_script() :
                     temp_video.write(frame)
                 else : 
                     temp_video.release()
-                    del temp_video
+                    temp_video = None
                     video.release()
                     print('read temp video')
                     video = cv2.VideoCapture(temp_video_name)
