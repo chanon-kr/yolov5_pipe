@@ -192,7 +192,7 @@ def main_script() :
                     del temp_video
                     video.release()
                     print('read temp video')
-                    video = cv2.VideoCapture(temp_video)
+                    video = cv2.VideoCapture(temp_video_name)
                 continue
 
             # Inference
