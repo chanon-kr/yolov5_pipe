@@ -160,6 +160,7 @@ def main_script() :
     # --Loop Phase--
     print('Start Main Loop')
     try :
+        read_temp_video = True
         temp_video = None
         while(video.isOpened()):
             # Begin
@@ -176,7 +177,6 @@ def main_script() :
                     break
 
             # Temp Video
-            read_temp_video = True
             temp_video_name = 'tempvideo.avi'
             temp_fps = 15
             temp_length = 60
