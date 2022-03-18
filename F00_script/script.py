@@ -184,8 +184,7 @@ def main_script() :
                 if temp_video is None :
                     print('create temp video')
                     temp_begin = datetime.now()
-                    temp_video = cv2.VideoWriter(temp_video_name, cv2.VideoWriter_fourcc(*'DIVX')  
-                                                , temp_fps, (imW, imH))
+                    temp_video = cv2.VideoWriter(temp_video_name, cv2.VideoWriter_fourcc(*'DIVX')  , temp_fps, (imW, imH))
                 if (datetime.now() - temp_begin).total_seconds() < temp_length :
                     temp_video.write(frame)
                 else : 
