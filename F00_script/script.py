@@ -178,9 +178,10 @@ def main_script() :
             read_temp_video = True
             temp_video_name = 'tempvideo.avi'
             temp_fps = 15
-            temp_length = 600
+            temp_length = 60
             if read_temp_video :
                 if temp_video is None :
+                    print('create temp video')
                     temp_begin = datetime.now()
                     temp_video = cv2.VideoWriter(temp_video_name, cv2.VideoWriter_fourcc(*'DIVX')  
                                                 , temp_fps, (imW, imH))
@@ -190,6 +191,7 @@ def main_script() :
                     temp_video.release()
                     del temp_video
                     video.release()
+                    print('read temp video')
                     video = cv2.VideoCapture(temp_video)
                 continue
 
