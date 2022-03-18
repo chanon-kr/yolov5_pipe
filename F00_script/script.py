@@ -160,7 +160,7 @@ def main_script() :
     # --Loop Phase--
     print('Start Main Loop')
     try :
-        read_temp_video = True
+        read_temp_video, record_temp = True, True
         temp_video = None
         while(video.isOpened()):
             # Begin
@@ -170,6 +170,7 @@ def main_script() :
                 if read_temp_video  :
                     video.release()
                     video = cv2.VideoCapture(video_source)
+                    record_temp = True
                     continue
                 elif reconnect_video : continue
                 else :
@@ -180,7 +181,7 @@ def main_script() :
             temp_video_name = 'tempvideo.avi'
             temp_fps = 15
             temp_length = 60
-            if read_temp_video :
+            if read_temp_video & record_temp :
                 if temp_video is None :
                     print('create temp video')
                     temp_begin = datetime.now()
@@ -190,6 +191,7 @@ def main_script() :
                 else : 
                     temp_video.release()
                     temp_video = None
+                    record_temp = False
                     video.release()
                     print('read temp video')
                     video = cv2.VideoCapture(temp_video_name)
