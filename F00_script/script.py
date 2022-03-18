@@ -165,10 +165,33 @@ def main_script() :
             now = datetime.now()
             ret, frame = video.read()
             if not ret:
-                if reconnect_video : continue
+                if read_temp_video  :
+                    video.release()
+                    video = cv2.VideoCapture(video_source)
+                    continue
+                elif reconnect_video : continue
                 else :
                     print('Reached the end of the video!')
                     break
+
+            # Temp Video
+            read_temp_video = True
+            temp_video_name = 'tempvideo.avi'
+            temp_fps = 15
+            temp_length = 600
+            if read_temp_video :
+                if temp_video is None :
+                    temp_begin = datetime.now()
+                    temp_video = cv2.VideoWriter(temp_video_name, cv2.VideoWriter_fourcc(*'DIVX')  
+                                                , temp_fps, (imW, imH))
+                if (datetime.now() - temp_begin).total_seconds() < temp_length :
+                    temp_video.write(frame)
+                else : 
+                    temp_video.release()
+                    del temp_video
+                    video.release()
+                    video = cv2.VideoCapture(temp_video)
+                continue
 
             # Inference
             results = model(frame[y1:y2,x1:x2], size = predict_size)
