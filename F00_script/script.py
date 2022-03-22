@@ -169,10 +169,14 @@ def main_script() :
             if not ret:
                 if read_temp_video  :
                     video.release()
+                    cv2.destroyAllWindows()
                     video = cv2.VideoCapture(video_source)
                     record_temp = True
                     continue
-                elif reconnect_video : continue
+                elif reconnect_video : 
+                    video.release()
+                    video = cv2.VideoCapture(video_source)
+                    continue
                 else :
                     print('Reached the end of the video!')
                     break
