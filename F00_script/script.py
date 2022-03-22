@@ -144,6 +144,14 @@ def main_script() :
     resize_width, resize_height = int(int(imW)*resize) , int(int(imH)*resize)
     resize_width_show, resize_height_show = int(int(imW)*show_size) , int(int(imH)*show_size)
 
+    # Temp Video
+    temp_video_name = 'tempvideo.avi'
+    temp_fps = 5
+    temp_min_time = 1/temp_fps
+    temp_length = 60
+    read_temp_video, record_temp = True, True
+    temp_video = None
+
     # Utility
     fps_list,now, frame_no = [],datetime.now(), 0
     df_all = pd.DataFrame()
@@ -160,48 +168,47 @@ def main_script() :
     # --Loop Phase--
     print('Start Main Loop')
     try :
-        read_temp_video, record_temp = True, True
-        temp_video = None
         while(video.isOpened()):
             # Begin
             now = datetime.now()
             ret, frame = video.read()
             if not ret:
+                # Temp Video End => Read Original Source
                 if read_temp_video  :
                     video.release()
                     cv2.destroyAllWindows()
                     video = cv2.VideoCapture(video_source)
                     record_temp = True
                     continue
+                # Not Temp Video & Reconnect => Reconnect
                 elif reconnect_video : 
                     video.release()
                     video = cv2.VideoCapture(video_source)
                     continue
+                # Not Temp Video & Not Reconnect => Break!!
                 else :
                     print('Reached the end of the video!')
                     break
 
             # Temp Video
-            temp_video_name = 'tempvideo.avi'
-            temp_fps = 5
-            temp_min_time = 1/temp_fps
-            temp_length = 60
             if read_temp_video & record_temp :
+                # Already Record or not?
                 if temp_video is None :
-                    print('create temp video')
+                    print('Create temp video')
                     temp_begin = datetime.now()
                     temp_video = cv2.VideoWriter(temp_video_name, cv2.VideoWriter_fourcc(*'DIVX')  , temp_fps, (int(imW), int(imH)))
                     prev = datetime.now()
+                # Limit FPS
                 if (now - prev).total_seconds() < temp_min_time : continue
+                # Check Length Video                
                 if (datetime.now() - temp_begin).total_seconds() < temp_length :
                     temp_video.write(frame)
                     prev = datetime.now()
                 else : 
                     temp_video.release()
-                    temp_video = None
-                    record_temp = False
+                    temp_video,record_temp = None, False
                     video.release()
-                    print('read temp video')
+                    print('Read temp video')
                     video = cv2.VideoCapture(temp_video_name)
                 continue
 
