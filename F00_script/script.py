@@ -81,12 +81,12 @@ def main_script() :
     temp_fps = int(input_df.get('temp_video_fps','0'))
     temp_length = int(input_df.get('temp_video_length','0'))
     if min(temp_fps , temp_length) <= 0 :
+        read_temp_video, record_temp = False, False
+    else : 
         temp_video_name = 'tempvideo.avi'
         temp_min_time = 1/temp_fps
         read_temp_video, record_temp = True, True
         temp_video = None
-    else : 
-        read_temp_video, record_temp = False, False
 
     ## Advance Parameter
     with open('F01_config/advance_config.json') as f :
