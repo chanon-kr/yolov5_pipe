@@ -180,6 +180,7 @@ def main_script() :
             # Temp Video
             temp_video_name = 'tempvideo.avi'
             temp_fps = 5
+            temp_min_time = 1/temp_fps
             temp_length = 60
             if read_temp_video & record_temp :
                 if temp_video is None :
@@ -187,7 +188,7 @@ def main_script() :
                     temp_begin = datetime.now()
                     temp_video = cv2.VideoWriter(temp_video_name, cv2.VideoWriter_fourcc(*'DIVX')  , temp_fps, (int(imW), int(imH)))
                     prev = datetime.now()
-                if (now - prev).total_seconds() <= 1/temp_fps : continue
+                if (now - prev).total_seconds() < temp_min_time : continue
                 if (datetime.now() - temp_begin).total_seconds() < temp_length :
                     temp_video.write(frame)
                     prev = datetime.now()
