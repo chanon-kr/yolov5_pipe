@@ -78,6 +78,7 @@ def main_script() :
     upload_minute = int(input_df.get('upload_minute','10'))
 
     # Temp Video
+    temp_display_output = int(input_df.get('temp_display_output' , '0'))
     temp_fps = int(input_df.get('temp_video_fps','0'))
     temp_length = int(input_df.get('temp_video_length','0'))
     if min(temp_fps , temp_length) <= 0 :
@@ -212,7 +213,7 @@ def main_script() :
                     print('Read temp video')
                     video = cv2.VideoCapture(temp_video_name)
                 # Show
-                if display_output :
+                if temp_display_output :
                     if resize_show :
                         resize_image = cv2.resize(frame, (resize_width_show, resize_height_show))
                         cv2.imshow('Object detector', resize_image)
