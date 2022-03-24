@@ -208,9 +208,10 @@ def main_script() :
                     # Show
                     if display_output :
                     #     if resize_show :
-                        resize_image = cv2.resize(frame, (resize_width_show, resize_height_show))
-                        cv2.imshow('Object detector', resize_image)
-                    #     else : cv2.imshow('Object detector', frame)      
+                        # resize_image = cv2.resize(frame, (resize_width_show, resize_height_show))
+                        # cv2.imshow('Object detector', resize_image)
+                    #     else : 
+                        cv2.imshow('Object detector', frame)      
                 else : 
                     temp_video.release()
                     temp_video,record_temp = None, False
