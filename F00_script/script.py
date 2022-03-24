@@ -201,10 +201,10 @@ def main_script() :
                     prev = datetime.now()
                 # Show
                 if display_output :
-                    if resize_show :
-                        resize_image = cv2.resize(frame, (resize_width_show, resize_height_show))
-                        cv2.imshow('Object detector', resize_image)
-                    else : cv2.imshow('Object detector', frame)      
+                #     if resize_show :
+                    resize_image = cv2.resize(frame, (resize_width_show, resize_height_show))
+                    cv2.imshow('Object detector', resize_image)
+                #     else : cv2.imshow('Object detector', frame)      
                 # Limit FPS
                 if (now - prev).total_seconds() < temp_min_time : continue
                 # Check Length Video          
