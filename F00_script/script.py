@@ -119,7 +119,7 @@ def main_script() :
     # Start!!!
     if turn_on_heartbeat : 
         start_message = json.dumps({'basic' : input_df , 'advance' : input_json})
-        send_heartbeat('Start Prep Phase', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name, message_in = start_message)
+        send_heartbeat('Start Prep Phase v2022_03_30_10:29', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name, message_in = start_message)
         del start_message
     del input_df, input_json
 
