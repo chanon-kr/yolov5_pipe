@@ -189,6 +189,7 @@ def main_script() :
                     continue
                 # Not Temp Video & Not Reconnect => Break!!
                 else :
+                    if turn_on_heartbeat : send_heartbeat('Reached the end of the video!', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name, message_in = start_message)
                     print('Reached the end of the video!')
                     break
 
@@ -288,7 +289,9 @@ def main_script() :
                     print('--- Finish Upload ---')
                 # Restart
                 restart_check = (now - start_time).total_seconds()/60
-                if restart_check > restart_minute : break
+                if restart_check > restart_minute : 
+                    if turn_on_heartbeat : send_heartbeat('Time to restart!', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name, message_in = start_message)
+                    break
 
             # Press 'q' to quit
             if cv2.waitKey(1) == ord('q'): break
