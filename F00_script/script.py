@@ -302,6 +302,8 @@ def main_script() :
     except Exception as e :
         error_message, callback_trigger = str(e), True
         long_error = str(traceback.format_exc())
+        if turn_on_heartbeat : send_heartbeat('Error Store', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name, message_in = long_error)
+        
 
     if turn_on_heartbeat : send_heartbeat('Start Release Phase', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
 
