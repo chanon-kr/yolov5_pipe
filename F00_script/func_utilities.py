@@ -151,13 +151,14 @@ def remove_uploaded_file(uploaded_folder, video_expire_after) :
     video_file = [i for (i, v) in zip(video_file, date_file) if v]
     for i_ in video_file : os.remove(i_)
 
-def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, storage_config_in, ignore_error_in = False, video_expire_after = 5) :
+def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, storage_config_in, ignore_error_in = False, video_expire_after = 5, turn_on_upload_clip = True) :
     bucket_config_in = storage_config_in['gcs']
     # Create Connection
     # print(bucket_config_in) ## For Debug
-    gcs = lazy_GCS(project_id = bucket_config_in['project_id']
-                   , bucket_name = bucket_config_in['bucket_name']
-                   , credential = bucket_config_in['credential'])
+    if turn_on_upload_clip : 
+        gcs = lazy_GCS(project_id = bucket_config_in['project_id']
+                    , bucket_name = bucket_config_in['bucket_name']
+                    , credential = bucket_config_in['credential'])
     # Create Uploaded Folder
     uploaded_folder = os.path.join(video_folder_in,'uploaded')
     if not os.path.isdir(uploaded_folder) : os.makedirs(os.path.join(os.getcwd(),uploaded_folder))
@@ -172,7 +173,7 @@ def upload_clip(video_folder_in, current_video_in, bucket_folder_name_in, storag
         bucket_file_name = '{}/{}'.format(bucket_folder_name_in , i_[folder_len:])
         try :
             # print(bucket_file_name) ## For Debug
-            gcs.upload(bucket_file = bucket_file_name , local_file = i_)
+            if turn_on_upload_clip : gcs.upload(bucket_file = bucket_file_name , local_file = i_)
             shutil.move(i_ , i_.replace(video_folder_in, uploaded_folder))
         except Exception as e: 
             if not ignore_error_in : raise Exception(e)

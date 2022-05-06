@@ -284,7 +284,7 @@ def main_script() :
                     upload_time = now
                     if turn_on_heartbeat : send_heartbeat('Start Upload', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
                     if turn_on_upload_db : upload_result(temp_table , now, db_table, local_record_config, db_record_config, ignore_error )
-                    if turn_on_upload_clip : upload_clip('F03_clip', current_video, bucket_folder_name, storage_config, ignore_error , video_expire_after = video_expire_after)
+                    upload_clip('F03_clip', current_video, bucket_folder_name, storage_config, ignore_error , video_expire_after = video_expire_after, turn_on_upload_clip = turn_on_upload_clip)
                     if turn_on_heartbeat : send_heartbeat('End Upload', heart_table_name, heart_beat_config, ignore_error_in = ignore_error, job_name_in = job_name)
                     print('--- Finish Upload ---')
                 # Restart
