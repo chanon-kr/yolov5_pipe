@@ -1,3 +1,6 @@
+# This Repo is just a prototype and deprecated.
+Go to https://github.com/chanon-kr/py_topping_imagui.
+
 # YOLOv5_Pipe
 ## Python Code to Deploy YOLOv5 
 
